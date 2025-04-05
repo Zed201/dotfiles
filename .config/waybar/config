@@ -1,0 +1,132 @@
+{
+  "layer": "top",
+    "position": "top",
+    "reload_style_on_change": true,
+    "modules-left": ["clock"],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": ["cava", "pulseaudio", "backlight","bluetooth", "network","battery",  "custom/logout"],
+
+
+    "hyprland/workspaces": {
+      "format": "{icon}",
+      "format-icons": {
+        "active": "",
+        "default": "",
+        "empty": ""
+      },
+      "persistent-workspaces": {
+        "*": [ 1,2,3,4,5 ]
+      }
+    },
+    "backlight": {
+      "device": "intel_backlight",  // Substitua pelo seu dispositivo (verifique com `ls /sys/class/backlight/`)
+      "format": "{icon} {percent}%",
+      "format-icons": ["🌑", "🌘", "🌗", "🌖", "🌕"],  // Emojis ou ícones para diferentes níveis
+      "on-scroll-up": "brightnessctl set +5%",
+      "on-scroll-down": "brightnessctl set 5%-",
+      "interval": 1
+    },    
+    "cava": {
+      "cava_config": "$HOME/.config/cava/config.conf",
+      "framerate": 30,
+      "autosens": 1,
+      //"sensitivity": 100,
+      "bars": 14,
+      "lower_cutoff_freq": 50,
+      "higher_cutoff_freq": 10000,
+      "method": "pulse",
+      "source": "auto",
+      "stereo": true,
+      "reverse": false,
+      "bar_delimiter": 0,
+      "monstercat": false,
+      "waves": false,
+      "noise_reduction": 0.77,
+      "input_delay": 2,
+      "format-icons" : ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+      "actions": {
+        "on-click-right": "mode"
+      }
+    },
+    "clock": {
+      "format": "{:%I:%M:%S %p, %d/%m} ",
+      "interval": 1,   
+      "tooltip-format": "<tt>{calendar}</tt>",
+      "calendar": {
+        "format": {
+          "today": "<span color='#fAfBfC'><b>{}</b></span>"
+        }
+      },
+      "actions": {
+        "on-click-right": "shift_down",
+        "on-click": "shift_up"
+      }
+    },
+    "network": {
+      "format-wifi": "",
+      "format-ethernet":"",
+      "format-disconnected": "",
+      "tooltip-format-disconnected": "Error",
+      "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
+      "tooltip-format-ethernet": "{ifname} 🖧 ",
+      "on-click-right": "ghostty --confirm-close-surface=false --class=com.float.window -e nmtui", 
+      "on-click": "nm-connection-editor",
+
+    },
+    "pulseaudio": {
+      "format": "{icon} {volume:2}%",
+      "format-bluetooth": "{icon} {volume}%",
+      "format-muted": "MUTE",
+      "format-icons": {
+        "headphones": "",
+        "default": [
+          "",
+        ""
+        ]
+      },
+      "scroll-step": 5,
+      "on-click": "pavucontrol"
+    },
+    "bluetooth": {
+      "format-on": "󰂯",
+      "format-off": "BT-off",
+      "format-disabled": "󰂲",
+      "format-connected-battery": "󰂯 {device_battery_percentage}% ",
+      "format-alt": "{device_alias} 󰂯",
+      "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+      "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
+      "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\n{device_battery_percentage}%",
+      "on-click": "blueman-manager",
+    }, 
+    "battery": {
+      "interval":30,
+      "states": {
+        "good": 95,
+        "warning": 30,
+        "critical": 20
+      },
+      "format": "{capacity}% {icon}",
+      "format-charging": "{capacity}% 󰂄",
+      "format-plugged": "{capacity}% 󰂄 ",
+      "format-alt": "{time} {icon}",
+      "format-icons": [
+        "󰁻",
+      "󰁼",
+      "󰁾",
+      "󰂀",
+      "󰂂",
+      "󰁹"
+      ],
+    }, 
+    "tray": {
+      "icon-size": 14,
+      "spacing": 10,
+    },
+    "custom/logout": {
+      "format": " ⏻ ",
+      "tooltip": false,
+      "on-click": "wlogout --protocol layer-shell"
+    }
+} 
+
