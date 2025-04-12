@@ -51,7 +51,7 @@
       }
     },
     "clock": {
-      "format": "{:%I:%M:%S %p, %d/%m} ",
+      "format": "{:%H:%M:%S, %d/%m} ",
       "interval": 1,   
       "tooltip-format": "<tt>{calendar}</tt>",
       "calendar": {
@@ -87,7 +87,7 @@
         ]
       },
       "scroll-step": 5,
-      "on-click": "pavucontrol"
+      "on-click": "ghostty --confirm-close-surface=false --class=com.float.window -e pulsemixer"
     },
     "bluetooth": {
       "format-on": "󰂯",
