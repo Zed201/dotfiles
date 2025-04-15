@@ -1,0 +1,28 @@
+[pyprland]
+plugins = ["magnify", ]#"shortcuts_menu", "scratchpads"]
+
+[magnify]
+factor=1
+duration=15
+
+# do something
+#[shortcuts_menu.entries]
+#"entry 1" = "command to run"
+#"entry 2" = "command to run"
+
+
+# [scratchpads.term]
+# animation = "fromRight"
+# command = "kitty --class kitty-dropterm"
+# class = "kitty-dropterm"
+# size = "75% 60%"
+# max_size = "1920px 100%"
+# margin = 50
+#
+# [scratchpads.volume]
+# animation = "fromRight"
+# command = "pavucontrol"
+# class = "org.pulseaudio.pavucontrol"
+# size = "40% 90%"
+# unfocus = "hide"
+# lazy = true

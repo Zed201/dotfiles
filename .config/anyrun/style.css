@@ -1,0 +1,34 @@
+/* Configurações gerais da janela do AnyRun */
+#window {
+  background-color: transparent; /* Fundo transparente para efeitos de blur */
+  font-family: "Fira Code", "Iosevka Nerd Font", sans-serif;
+}
+
+/* Caixa principal (contém a entrada e os resultados) */
+#main-box {
+  background-color: rgba(30, 30, 46, 0.9); /* Cor de fundo com transparência (ROSÉ PINE) */
+  border-radius: 16px; /* Bordas arredondadas */
+  padding: 12px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.5); /* Sombra suave */
+}
+
+/* Campo de entrada de texto */
+#entry {
+  background-color: rgba(49, 50, 68, 0.7); /* Cor do campo de busca */
+  color: #cdd6f4; /* Texto branco */
+  border: 2px solid rgba(203, 166, 247, 0.3); /* Borda roxa suave */
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* matcha de resultados */
+#match {
+  
+}
+
+#match-title {
+}
+
+
