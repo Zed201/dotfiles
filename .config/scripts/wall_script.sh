@@ -52,6 +52,7 @@ while true; do
         sed "s/#303446/$_back/g; s/#ffffff/$_text/g" \
           ~/.config/waybar/style_template.css >~/.config/waybar/style.css
 
+
         sleep "${2:-$DEFAULT_INTERVAL}"
   done
 done
