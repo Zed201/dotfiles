@@ -4,6 +4,18 @@
 # at a set interval.
 
 DEFAULT_INTERVAL=60 # In seconds
+STATE="ativo"
+
+handle_usr1() {
+    STATE="pausado"
+}
+
+handle_usr2() {
+    STATE="ativo"
+}
+
+trap 'handle_usr1' USR1
+trap 'handle_usr2' USR2
 
 # Função para calcular luminância (0-1)
 calculate_luminance() {
@@ -28,31 +40,36 @@ export SWWW_TRANSITION_STEP="${SWWW_TRANSITION_STEP:-2}"
 while true; do
   find "$1" -type f |
     while read -r img; do
-      # randomize the imgs
-      echo "$(</dev/urandom tr -dc a-zA-Z0-9 | head -c 8):$img"
+      # Randomiza os nomes
+      echo "$(tr -dc a-zA-Z0-9 </dev/urandom | head -c 8):$img"
     done |
-      sort -n | cut -d':' -f2- |
-      while read -r img; do
+    sort -n | cut -d':' -f2- |
+    while read -r img; do
+      if [ "$STATE" = "ativo" ]; then
         swww img --resize="$RESIZE_TYPE" "$img"
-        # change the colors of waybar
-        # Extrai as 2 cores principais
-        read _back _text <<<$(magick "$img" -resize 200x200 -kmeans 2 -unique-colors -blur 0x1 txt:- | tail -n +2 | awk '{print substr($3, 1, 7)}' | tr '\n' ' ')
 
-        # Determina cor do texto baseado no contraste
+        # Extrai as 2 cores principais da imagem
+        read _back _text <<<$(magick "$img" -resize 200x200 -kmeans 2 -unique-colors -blur 0x1 txt:- | tail -n +2 | awk '{print substr($3, 1, 7)}' | tr '\n' ' ')
+        
+        # Determina cor do texto baseado na luminância
         luminance=$(calculate_luminance "$_back")
         if (($(echo "$luminance > 0.5" | bc -l))); then
-          # Fundo claro -> texto escuro
           _text="#000000"
         else
-          # Fundo escuro -> texto claro
           _text="#FFFFFF"
         fi
 
-        # Aplica ao template
+        # Aplica ao estilo do Waybar
         sed "s/#303446/$_back/g; s/#ffffff/$_text/g" \
           ~/.config/waybar/style_template.css >~/.config/waybar/style.css
 
+        # (Recarregar o waybar se necessário)
+        pkill -SIGUSR2 waybar
 
-        sleep "${2:-$DEFAULT_INTERVAL}"
-  done
+      else
+        echo ">> Em pausa, pulando wallpaper atual"
+      fi
+
+      sleep "${2:-$DEFAULT_INTERVAL}"
+    done
 done

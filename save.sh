@@ -2,7 +2,7 @@
 
 # Array de pastas a serem backupadas
 PASTAS=("anyrun" "code-flags.conf" "hypr" "nvim" "waybar"
-        "wireplumber" "wofi" "clipse" "htop" "mako" "scripts" "wlogout" "yazi")
+        "wireplumber" "wofi" "clipse" "htop" "mako" "scripts" "wlogout" "yazi" "fuzzel")
 
 # Copiar cada pasta para a pasta de destino
 for pasta in "${PASTAS[@]}"; do
