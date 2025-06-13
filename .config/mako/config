@@ -36,3 +36,6 @@ default-timeout=0
 [summary~="log-.*"]
 border-color=#a3be8c
 
+# set invisible to presentation mode
+[mode=do-not-disturb]
+invisible=true
