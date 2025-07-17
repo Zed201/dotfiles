@@ -1,21 +1,46 @@
 #!/bin/bash
-# toogle wallpaper and notifications off for presentation
+# toggle_wallpaper.sh - Para/Reinicia wallpapers no Hyprland
 
-SCRIPT_NAME="$HOME/.config/scripts/wall_script.sh"
-WALL_DIR="$HOME/imagens/wallpapers"
-STATE_FILE="$HOME/.cache/wallpaper_black_toggle"
+WALL_SCRIPT="$HOME/.config/scripts/wall_script.sh" # Seu script de wallpapers em loop
+STATE_FILE="$HOME/.cache/wallpaper_state"
+BLACK_WALL="$HOME/.cache/black_wall.png"
+WALL_DIR="$HOME/imagens/wallpapers/"
 
-mkdir -p "$(dirname "$STATE_FILE")"
+# Cria um wallpaper preto se não existir
+[ ! -f "$BLACK_WALL" ] && convert -size 1920x1080 xc:black "$BLACK_WALL"
 
+# Verifica se o wallpaper está ativo (STATE_FILE existe)
 if [ -f "$STATE_FILE" ]; then
-        echo "🛑 Parando script de wallpaper looping..."
-        pkill -f "$SCRIPT_NAME" 2>/dev/null
-        pkill -f swww 2>/dev/null
+        echo "🛑 Parando wallpapers e ativando modo preto..."
+
+        # Mata TODOS os processos relacionados (incluindo o loop do script)
+        pkill -f "$WALL_SCRIPT" 2>/dev/null
+        pkill -x mpvpaper 2>/dev/null
+        pkill -x swww 2>/dev/null
+        killall mpvpaper swww 2>/dev/null # Garantia extra
+
+        # Força um wallpaper preto (Hyprland compatível)
+        if command -v swww >/dev/null; then
+                swww img "$BLACK_WALL" --transition-type none && echo "✅ Tela preta (swww)"
+        elif command -v feh >/dev/null; then
+                feh --bg-fill "$BLACK_WALL" && echo "✅ Tela preta (feh)"
+        else
+                hyprctl hyprpaper unload all && echo "✅ Tela preta (hyprpaper)"
+        fi
+
         rm -f "$STATE_FILE"
-        echo "✅ Modo black/desativado."
 else
-        echo "🚀 Iniciando swww-daemon + script de wallpapers..."
-        nohup bash -c "swww-daemon & sleep 0.5 && \"$SCRIPT_NAME\" \"$WALL_DIR\"" >/dev/null 2>&1 &
+        echo "🚀 Iniciando wallpapers..."
+
+        # Garante que não há processos antigos rodando
+        pkill -f "$WALL_SCRIPT" 2>/dev/null
+        pkill -x mpvpaper 2>/dev/null
+        pkill -x swww 2>/dev/null
+
+        # Inicia o wallpaper em loop (não usa nohup para evitar reinício indesejado)
+        bash "$WALL_SCRIPT" "$WALL_DIR" &
+        disown
+
         echo "on" >"$STATE_FILE"
-        echo "✅ Modo looping reativado."
+        echo "✅ Wallpaper em loop reiniciado."
 fi
