@@ -1,0 +1,30 @@
+[user]
+	email = luizg0509@gmail.com
+	name = Luiz Gustavo
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	editor = nvim
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+    dark = true
+    side-by-side = true
+    hyperlinks = true
+    line-numbers = true
+[merge]
+	conflictStyle = zdiff3
+[commit]
+        verbose = true
+[column]
+        ui = auto
+[push]
+        autoSetupRemote = true
+[maintenance]
+    auto = true
+    strategy = incremental

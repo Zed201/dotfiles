@@ -1,10 +1,10 @@
 
 
-/*@define-color background #3A2613;          Fundo principal 
+/*@define-color background #332317;          Fundo principal 
 @define-color foreground #232634;           Texto principal 
 @define-color primary #8caaee;              Cor de destaque */
 
-@define-color _back #3A2613;           /* Fundo principal */
+@define-color _back #332317;           /* Fundo principal */
 @define-color _text #FFFFFF;           /* Texto principal */
 
 * {
