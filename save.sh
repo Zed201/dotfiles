@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Array de pastas a serem backupadas
-PASTAS=("anyrun" "code-flags.conf" "hypr" "nvim" "waybar"
-        "wireplumber" "wofi" "clipse" "htop" "mako" "scripts" "wlogout" "yazi" "fuzzel")
+PASTAS=("code-flags.conf" "hypr" "nvim" "waybar"
+        "wireplumber" "clipse" "htop" "scripts" "wlogout" "yazi" "fuzzel" "sherlock")
 
 # Copiar cada pasta para a pasta de destino
 for pasta in "${PASTAS[@]}"; do
