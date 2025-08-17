@@ -2,6 +2,7 @@
 # esta com um chattr +i para não ser excluido acidentalmente
 # Changes the wallpaper to a randomly chosen image or video in a given directory
 # at a set interval.
+# para rodar ele desacoplado /path/para/seu/script.sh & disown
 
 DEFAULT_INTERVAL=30 # In seconds
 
@@ -26,12 +27,14 @@ if [ $# -lt 1 ] || [ ! -d "$1" ]; then
 fi
 
 # See swww-img(1)
-RESIZE_TYPE="crop"
-export SWWW_TRANSITION_FPS="${SWWW_TRANSITION_FPS:-60}"
-export SWWW_TRANSITION_STEP="${SWWW_TRANSITION_STEP:-2}"
+# RESIZE_TYPE="crop"
+# export SWWW_TRANSITION_FPS="${SWWW_TRANSITION_FPS:-60}"
+# export SWWW_TRANSITION_STEP="${SWWW_TRANSITION_STEP:-2}"
 
 while true; do
   find "$1" -type f |
+    # Descomente a linha abaixo para filtrar apenas as extensões desejadas
+    # grep -Ei '\.(mp4|mkv|webm)$' |
     while read -r img; do
       echo "$(</dev/urandom tr -dc a-zA-Z0-9 | head -c 8):$img"
     done |
@@ -43,13 +46,17 @@ while true; do
       if printf "%s\n" "$ext_lower" | grep -qE '^(mp4|webm|mkv)$'; then
         # Se for vídeo, mata qualquer mpvpaper e inicia outro
         pkill -x mpvpaper 2>/dev/null
+        pkill -x swaybg 2>/dev/null
         mpvpaper '*' "$img" -o "--loop --mute --no-osc --no-osd-bar" --wid-mode &
 
       else
         # Se for imagem, mata mpvpaper se estiver rodando
         pkill -x mpvpaper 2>/dev/null
 
-        swww img --resize="$RESIZE_TYPE" "$img"
+        # swww img --resize="$RESIZE_TYPE" "$img" # swww esta bugando por algum motivo
+        echo "$img"
+        pkill -x swaybg  2>/dev/null
+        swaybg -i "$img" -m fill &
 
         # Cores do waybar (apenas para imagens)
         read _back _text <<<$(magick "$img" -resize 200x200 -kmeans 2 -unique-colors -blur 0x1 txt:- | tail -n +2 | awk '{print substr($3, 1, 7)}' | tr '\n' ' ')

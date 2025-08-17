@@ -16,17 +16,13 @@ if [ -f "$STATE_FILE" ]; then
         # Mata TODOS os processos relacionados (incluindo o loop do script)
         pkill -f "$WALL_SCRIPT" 2>/dev/null
         pkill -x mpvpaper 2>/dev/null
-        pkill -x swww 2>/dev/null
+        # pkill -x swww 2>/dev/null
+        pkill -x swaybg 2>/dev/null
         killall mpvpaper swww 2>/dev/null # Garantia extra
 
         # Força um wallpaper preto (Hyprland compatível)
-        if command -v swww >/dev/null; then
-                swww img "$BLACK_WALL" --transition-type none && echo "✅ Tela preta (swww)"
-        elif command -v feh >/dev/null; then
-                feh --bg-fill "$BLACK_WALL" && echo "✅ Tela preta (feh)"
-        else
-                hyprctl hyprpaper unload all && echo "✅ Tela preta (hyprpaper)"
-        fi
+        # swww img "$BLACK_WALL" --transition-type none && echo "✅ Tela preta (swww)"
+        swaybg -i "$BLACK_WALL" &
 
         rm -f "$STATE_FILE"
 else
@@ -35,7 +31,8 @@ else
         # Garante que não há processos antigos rodando
         pkill -f "$WALL_SCRIPT" 2>/dev/null
         pkill -x mpvpaper 2>/dev/null
-        pkill -x swww 2>/dev/null
+        # pkill -x swww 2>/dev/null
+        pkill -x swaybg 2>/dev/null
 
         # Inicia o wallpaper em loop (não usa nohup para evitar reinício indesejado)
         bash "$WALL_SCRIPT" "$WALL_DIR" &
